@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	.ui-download {
+		
+	}
+	</ui:style>
+	
+	<ui:with type="java.lang.String" field="downloadButtonClass"></ui:with>
+	<ui:with type="java.lang.String" field="downloadIconClass"></ui:with>
+	<ui:with type="com.google.gwt.safehtml.shared.SafeUri" field="download"></ui:with>
+	
+	<span>
+		<a class="{downloadButtonClass}" href="{download}" download="download">
+				<i class="{downloadIconClass}" />
+		</a>
+	</span>
+</ui:UiBinder> 

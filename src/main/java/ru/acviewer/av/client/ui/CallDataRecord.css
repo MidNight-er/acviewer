@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+.emptyTableWidget {
+	margin-top: 15em;
+}
+
+.acv-btn {
+	margin-right: 20px;
+}
+
+.acv-pager {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.acv-table {
+	
+}
+
+.border {
+	border: 1px solid silver;
+}

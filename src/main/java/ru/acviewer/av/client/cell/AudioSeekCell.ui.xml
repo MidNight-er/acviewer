@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style src="AudioSeekSlider.css">
+
+	</ui:style>
+
+	<ui:with type="java.lang.String" field="elementId"></ui:with>
+
+
+	<div id="{elementId}" class="{style.ui-slider}">
+		<div class="{style.ui-slider-range}"></div>
+		<a href="#" class="{style.ui-slider-handle}"></a>
+	</div>
+</ui:UiBinder> 

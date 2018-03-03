@@ -1,0 +1,119 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+	<ui:style>
+	.signOn-container {
+		/* restore after sigIn view*/
+		margin-top: 10px;
+	}
+	
+	.license-icon {
+		margin-left: 1em;
+	}
+	
+	.acv-center {
+		float: none;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.acv-acknowledgment {
+		text-align: justify;
+	}
+	</ui:style>
+
+	<ui:with type="ru.acviewer.av.client.bundle.Resources" field="resources" />
+	<ui:with type="ru.acviewer.av.client.i18n.messages.AppMessages" field="msg" />
+
+	<g:HTMLPanel addStyleNames="{style.signOn-container}">
+		<b:Container >
+			<b:Container>
+				<b:Navbar>
+					<b:NavPills>
+						<b:Dropdown text="{msg.signOnMenu}">
+							<b:NavLink ui:field="userAccountShowField" 
+								text="{msg.signOnAccount}" />
+							<b:NavLink ui:field="aboutProgrammField" 
+								text="{msg.signOnAbout}" />
+							<b:NavLink ui:field="signOutField" 
+								text="{msg.exitProgram}" href="signOut"/>
+						</b:Dropdown>
+					</b:NavPills>
+
+					<b:Nav alignment="RIGHT">
+						<g:HTMLPanel>
+							<a href="http://acviewer-shop.appspot.com">
+								<b:Image url="{resources.logo.getSafeUri.asString}"
+									pixelSize="176, 40" />
+							</a>
+						</g:HTMLPanel>
+					</b:Nav>
+				</b:Navbar>
+			</b:Container>
+
+			<b:Modal ui:field="userAccountModalField" title="Учётные данные"
+				backdrop="STATIC" keyboard="true" animation="true">
+				<b:WellForm>
+					<b:Controls>
+						<b:ControlGroup>
+							<b:PasswordTextBox ui:field="currentPasswordField"
+								placeholder="{msg.currentPassword}" />
+						</b:ControlGroup>
+						<b:ControlGroup>
+							<b:PasswordTextBox ui:field="newPasswordField"
+								placeholder="{msg.newPassword}" />
+						</b:ControlGroup>
+						<b:ControlGroup>
+							<b:PasswordTextBox ui:field="retypePasswordField"
+								placeholder="{msg.retypePassword}" />
+						</b:ControlGroup>
+						<b:ControlGroup>
+							<b:Label ui:field="passwordNotificationField" />
+						</b:ControlGroup>
+					</b:Controls>
+				</b:WellForm>
+				<b:ModalFooter>
+					<b:Button ui:field="userAccountUpdateButton" icon="FILE"
+						text="{msg.updateButton}" />
+					<b:Button ui:field="userAccountHideButton" icon="REMOVE"
+						text="{msg.closeButton}" />
+				</b:ModalFooter>
+			</b:Modal>
+
+			<b:Modal ui:field="aboutModalField" title="О программе"
+				backdrop="STATIC" keyboard="true" animation="true">
+				<g:HTMLPanel styleName="{style.acv-acknowledgment}">
+					<h4>ACViewer</h4>
+					<b:Paragraph text="{resources.aboutProgram.getText}" />
+					<address>
+						Электронный адрес технической поддержки:
+						<br />
+						<a href="mailto:#">midnighterdev@gmail.com</a>
+						<br />
+						<strong>Михаил Девятов</strong>
+					</address>
+					<p>
+						<ui:text from="{msg.signOnLicense}" />
+						<a href="{resources.license.getSafeUri}">
+							<b:Image url="{resources.acrobatReader.getSafeUri.asString}"
+								styleName="{style.license-icon}" />
+						</a>
+					</p>
+				</g:HTMLPanel>
+				<b:ModalFooter>
+					<b:Button ui:field="aboutModalHideButton" icon="REMOVE"
+						text="{msg.closeButton}" />
+				</b:ModalFooter>
+			</b:Modal>
+
+			<b:Container>
+				<b:Row>
+					<b:Column size="12">
+						<g:SimplePanel ui:field="workFlowPanel" />
+					</b:Column>
+				</b:Row>
+			</b:Container>
+		</b:Container>
+	</g:HTMLPanel>
+</ui:UiBinder>
