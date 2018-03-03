@@ -292,7 +292,7 @@
 		</profile>
 
 		<profile>
-			<id>release</id>
+			<id>production</id>
 			<build>
 				<plugins>
 					<plugin>
