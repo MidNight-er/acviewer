@@ -2,7 +2,7 @@ package ru.acviewer.av.client.event;
 
 import java.util.List;
 
-import ru.acviewer.av.shared.CallDataRecordProxy;
+import ru.acviewer.av.shared.CdrProxy;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -16,25 +16,25 @@ public class PopulateDataEvent extends GwtEvent<PopulateDataEvent.AppHandler> {
 	
 	public static final Type<AppHandler> TYPE = new Type<AppHandler>();
 
-	private List<CallDataRecordProxy> calls;
+	private List<CdrProxy> calls;
 
 	private Range range; 
 	
-	public PopulateDataEvent(Range range, List<CallDataRecordProxy> calls) {
+	public PopulateDataEvent(Range range, List<CdrProxy> calls) {
 		this.range = range;
 		this.calls = calls;
 	}
 	
-	public List<CallDataRecordProxy> getCalls() {
+	public List<CdrProxy> getCalls() {
 		return calls;
 	}
 
 	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<AppHandler> getAssociatedType() {
+	public Type<AppHandler> getAssociatedType() {
 		return TYPE;
 	}
 	
-	public static com.google.gwt.event.shared.GwtEvent.Type<AppHandler> getType() {
+	public static Type<AppHandler> getType() {
 		return TYPE;
 	}
 

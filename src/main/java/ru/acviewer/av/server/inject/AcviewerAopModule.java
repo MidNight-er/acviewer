@@ -6,7 +6,7 @@ import ru.acviewer.av.server.interceptor.AuthenticationRequired;
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
 
-public class AopModule extends AbstractModule {
+public class AcviewerAopModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

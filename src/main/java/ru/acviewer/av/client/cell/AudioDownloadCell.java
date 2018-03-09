@@ -17,8 +17,8 @@ public class AudioDownloadCell extends AbstractCell<PlayerControl> {
 	private final String DOWNLOAD_BUTTON = "btn btn-mini";
 	
 	interface AudioDownloadCellUiRenderer extends UiRenderer {
-		void render(SafeHtmlBuilder sb, String downloadButtonClass, 
-				String downloadIconClass, SafeUri download);
+		void render(SafeHtmlBuilder sb, String downloadButtonClass,
+                    String downloadIconClass, SafeUri download);
 	}
 	
 	private static final AudioDownloadCellUiRenderer renderer = 
@@ -29,7 +29,7 @@ public class AudioDownloadCell extends AbstractCell<PlayerControl> {
 	}
 
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context,
+	public void render(Context context,
 			PlayerControl value, SafeHtmlBuilder sb) {
 		if (value != null) {
 			String download = buildUrl(value.getId());

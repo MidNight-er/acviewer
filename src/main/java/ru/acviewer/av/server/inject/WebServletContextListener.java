@@ -7,7 +7,7 @@ import ru.acviewer.av.server.controller.sing.SignInService;
 import ru.acviewer.av.server.controller.sing.SignOutService;
 import ru.acviewer.av.server.requestfactory.InjectedRequestFactoryModule;
 import ru.acviewer.av.server.requestfactory.InjectedRequestFactoryServlet;
-import ru.acviewer.av.server.supplier.AppMisc;
+import ru.acviewer.av.server.supplier.AcviewerMisc;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -25,8 +25,9 @@ public class WebServletContextListener extends GuiceServletContextListener {
 		return Guice.createInjector(new ServletModule() {
 			@Override
 			protected void configureServlets() {
-				install(new AppModule());
+				install(new AcviewerModule());
 				// JPA
+				// http://barinskis.me/blog/2013/04/30/persistence-unit-of-work-pattern-in-sitebricks/
 				JpaPersistModule persistModule = new JpaPersistModule("resource-local");
 				install(persistModule);
 				install(new SitebricksModule() {
@@ -55,9 +56,9 @@ public class WebServletContextListener extends GuiceServletContextListener {
 				serve("/gwtRequest").with(InjectedRequestFactoryServlet.class);
 				
 				// AOP
-				install(new AopModule());
+				install(new AcviewerAopModule());
 				
-				AppMisc.populateDataStoreAtOnce(persistModule);
+				AcviewerMisc.populateDataStoreAtOnce(persistModule);
 			}
 		});
 	}

@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import ru.acviewer.av.server.domain.CallDataRecord;
+import ru.acviewer.av.server.domain.Cdr;
 import ru.acviewer.av.server.exception.UserIsNotAuthenticated;
 import ru.acviewer.av.server.supplier.AudioSupplier;
-import ru.acviewer.av.server.supplier.CallDataRecordSupplier;
+import ru.acviewer.av.server.supplier.CdrSupplier;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -36,7 +36,7 @@ public class AudioService {
 	private AudioSupplier audioSupplier;
 
 	@Inject
-	private CallDataRecordSupplier callDataRecordSupplier;
+	private CdrSupplier callDataRecordSupplier;
 
 	@Inject
 	public AudioService(Logger log) {
@@ -47,7 +47,7 @@ public class AudioService {
 	public Reply<?> streamAudio(Request<String> request) {
 		String rangeValue = request.header("range").trim().substring("bytes=".length());
 		try {
-			CallDataRecord cdr = callDataRecordSupplier.findById(id);
+			Cdr cdr = callDataRecordSupplier.findById(id);
 			if (cdr != null && !cdr.getUniqueId().isEmpty()) {
 				File file = audioSupplier.getAudioFile(filePath
 						+ cdr.getUniqueId() + "." + fileExtension);

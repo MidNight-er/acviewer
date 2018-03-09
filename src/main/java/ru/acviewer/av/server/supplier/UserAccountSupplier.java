@@ -1,5 +1,7 @@
 package ru.acviewer.av.server.supplier;
 
+import java.util.Date;
+
 import ru.acviewer.av.server.domain.UserAccount;
 import ru.acviewer.av.server.exception.UserIsNotAuthenticated;
 
@@ -11,6 +13,7 @@ public interface UserAccountSupplier {
 	UserAccount signIn(String name, String password) throws UserIsNotAuthenticated;
 	void signOut();
 	void updatePassword(String password, String newPassword,
-			String retypePassword) throws UserIsNotAuthenticated;
+                        String retypePassword) throws UserIsNotAuthenticated;
+	void updateSummaryRange(Date start, Date end);
 
 }

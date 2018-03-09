@@ -17,7 +17,7 @@ public class AudioSeekCell extends AbstractCell<PlayerControl> {
 	interface AudioSeekCellUiRenderer extends UiRenderer {
 		void render(SafeHtmlBuilder sb, String elementId);
 		void onBrowserEvent(AudioSeekCell cell, NativeEvent event,
-				Element parent, PlayerControl value, Context context, ValueUpdater<PlayerControl> vUp);
+                            Element parent, PlayerControl value, Context context, ValueUpdater<PlayerControl> vUp);
 	}
 	
 	private static final AudioSeekCellUiRenderer renderer = 
@@ -28,7 +28,7 @@ public class AudioSeekCell extends AbstractCell<PlayerControl> {
 	}
 
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context,
+	public void render(Context context,
 			PlayerControl value, SafeHtmlBuilder sb) {
 		if (value != null) {
 			String elementId = AudioPlayer.SEEK_ELEMENT_ID + value.getId();

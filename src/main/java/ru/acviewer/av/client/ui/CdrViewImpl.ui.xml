@@ -6,7 +6,7 @@
 	xmlns:m="urn:import:com.google.gwt.media.client"
 	xmlns:dt="urn:import:ru.acviewer.av.client.widget">
 
-	<ui:style src="CallDataRecord.css" type="ru.acviewer.av.client.ui.CallDataRecordViewImpl.AppResource" />
+	<ui:style src="CallDataRecord.css" type="ru.acviewer.av.client.ui.CdrViewImpl.AppResource" />
 	<ui:with type="ru.acviewer.av.client.i18n.constants.AppConstants" field="constants" />
 	<ui:with type="ru.acviewer.av.client.i18n.messages.AppMessages" field="messages" />
 

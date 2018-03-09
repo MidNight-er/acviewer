@@ -22,11 +22,11 @@ public class AudioPlayButtonCell extends AbstractCell<Long> {
 	private final String PLAY_BUTTON_DISABLED = "btn btn-mini disabled";
 
 	interface AudioPlayCellUiRenderer extends UiRenderer {
-		void render(SafeHtmlBuilder sb, String elementId, String playButtonClass, 
-				String playIconClass);
+		void render(SafeHtmlBuilder sb, String elementId, String playButtonClass,
+                    String playIconClass);
 		void onBrowserEvent(AudioPlayButtonCell cell, NativeEvent event,
-				Element parent, Long value, Context context,
-				ValueUpdater<Long> vUp);
+                            Element parent, Long value, Context context,
+                            ValueUpdater<Long> vUp);
 	}
 	
 	private static final AudioPlayCellUiRenderer renderer = 
@@ -37,7 +37,7 @@ public class AudioPlayButtonCell extends AbstractCell<Long> {
 	}
 
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context,
+	public void render(Context context,
 			Long value, SafeHtmlBuilder sb) {
 		String elementId = AudioPlayer.PLAY_ELEMENT_ID + value;
 		if (value != null) {

@@ -26,7 +26,7 @@ public class AudioTimerCell extends AbstractCell<PlayerControl> {
 	}
 
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context,
+	public void render(Context context,
 			PlayerControl value, SafeHtmlBuilder sb) {
 		if (value != null) {
 			String elementId = AudioPlayer.TIMER_ELEMENT_ID + value.getId();

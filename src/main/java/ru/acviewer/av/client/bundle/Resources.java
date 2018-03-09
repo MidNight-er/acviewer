@@ -11,14 +11,9 @@ public interface Resources extends ClientBundle {
 	@Source("image/Original_512.png")
 	ImageResource logo();
 	
-	@Source("image/reader-16x16.png")
-	ImageResource acrobatReader();
-	
 	@Source("text/AboutProgram.txt")
 	TextResource aboutProgram();
 	
-	@DoNotEmbed
-	@Source("text/license.pdf")
-	DataResource license();
+
 	
 }

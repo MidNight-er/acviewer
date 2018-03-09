@@ -22,11 +22,11 @@ public class PasswordUpdateEvent extends GwtEvent<PasswordUpdateEvent.AppHandler
 	}
 
 	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<AppHandler> getAssociatedType() {
+	public Type<AppHandler> getAssociatedType() {
 		return TYPE;
 	}
 	
-	public static com.google.gwt.event.shared.GwtEvent.Type<AppHandler> getType() {
+	public static Type<AppHandler> getType() {
 		return TYPE;
 	}
 

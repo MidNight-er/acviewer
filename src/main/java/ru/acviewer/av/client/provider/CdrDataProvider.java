@@ -3,11 +3,11 @@ package ru.acviewer.av.client.provider;
 import java.util.Date;
 import java.util.List;
 
-import ru.acviewer.av.client.activity.CallDataRecordActivity.Driver;
+import ru.acviewer.av.client.activity.CdrActivity.Driver;
 import ru.acviewer.av.client.bean.SearchRequest;
-import ru.acviewer.av.client.service.CallDataRecordRequestFactory;
-import ru.acviewer.av.client.service.CallDataRecordRequestFactory.CallRequestContext;
-import ru.acviewer.av.shared.CallDataRecordProxy;
+import ru.acviewer.av.client.service.CdrRequestFactory;
+import ru.acviewer.av.client.service.CdrRequestFactory.CallRequestContext;
+import ru.acviewer.av.shared.CdrProxy;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -18,16 +18,16 @@ import com.google.inject.Inject;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
-public class CallDataProvider extends AsyncDataProvider<CallDataRecordProxy> {
+public class CdrDataProvider extends AsyncDataProvider<CdrProxy> {
 
-	private CallDataRecordRequestFactory requestFactory;
+	private CdrRequestFactory requestFactory;
 	private SearchRequest searchRequest;
 	private Driver driver;
 	
 	@Inject
 	private EventBus eventBus;
 
-	public CallDataProvider(CallDataRecordRequestFactory requestFactory, 
+	public CdrDataProvider(CdrRequestFactory requestFactory, 
 			Driver driver, SearchRequest searchRequest) {
 		this.requestFactory = requestFactory;
 		this.driver = driver;
@@ -35,7 +35,7 @@ public class CallDataProvider extends AsyncDataProvider<CallDataRecordProxy> {
 	}
 
 	@Override
-	protected void onRangeChanged(HasData<CallDataRecordProxy> display) {
+	protected void onRangeChanged(HasData<CdrProxy> display) {
 		driver.flush();
 		Date dateStart = searchRequest.getDateTimeStart();
 		Date dateLength = searchRequest.getDateTimeLength();
@@ -69,7 +69,7 @@ public class CallDataProvider extends AsyncDataProvider<CallDataRecordProxy> {
 		});
 	}
 
-	private void rowData(CallRequestContext context, HasData<CallDataRecordProxy> display,
+	private void rowData(CallRequestContext context, HasData<CdrProxy> display,
 			Date dateStart, Date dateLength, String clid, String src, String dst, 
 			String disposition) {
 		final Range range = display.getVisibleRange();
@@ -77,9 +77,9 @@ public class CallDataProvider extends AsyncDataProvider<CallDataRecordProxy> {
 		int length = start + range.getLength();
 		
 		context.findAll(start, length,	dateStart, dateLength, clid, src, dst, disposition)
-				.with("clid").fire(new Receiver<List<CallDataRecordProxy>>() {
+				.with("clid").fire(new Receiver<List<CdrProxy>>() {
 			@Override
-			public void onSuccess(List<CallDataRecordProxy> response) {
+			public void onSuccess(List<CdrProxy> response) {
 				if (response != null) {
 					updateRowData(range.getStart(), response);
 				}

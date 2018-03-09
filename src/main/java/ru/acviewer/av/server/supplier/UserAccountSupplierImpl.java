@@ -1,5 +1,6 @@
 package ru.acviewer.av.server.supplier;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 
 import ru.acviewer.av.server.controller.sing.UserSession;
+import ru.acviewer.av.server.domain.SummaryRange;
 import ru.acviewer.av.server.domain.UserAccount;
 import ru.acviewer.av.server.exception.UserIsNotAuthenticated;
 import ru.acviewer.av.server.interceptor.AuthenticationRequired;
@@ -71,6 +73,21 @@ public class UserAccountSupplierImpl implements UserAccountSupplier {
 		} else {
 			throw new UserIsNotAuthenticated("Update password error");
 		}
+	}
+	
+	@AuthenticationRequired
+	@Transactional
+	@Override
+	public void updateSummaryRange(Date start, Date end) {
+		UserSession userSession = userSessionProvider.get();
+		// get current user id
+		String id = userSession.getUserAccount().getId();
+		UserAccount userAccount = findById(id);
+		SummaryRange summaryRange = userAccount.getSummaryRange();
+		summaryRange.setCdrStart(start);
+		summaryRange.setCdrEnd(end);
+		userAccount.setSummaryRange(summaryRange);
+		entityManagerProvider.get().merge(userAccount);
 	}
 
 }

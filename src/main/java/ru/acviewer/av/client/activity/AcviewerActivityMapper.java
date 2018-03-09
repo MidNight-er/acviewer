@@ -1,6 +1,7 @@
 package ru.acviewer.av.client.activity;
 
-import ru.acviewer.av.client.place.CallDataRecordPlace;
+import ru.acviewer.av.client.place.CdrPlace;
+import ru.acviewer.av.client.place.CdrSummaryPlace;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -21,8 +22,10 @@ public class AcviewerActivityMapper implements ActivityMapper {
 	// SignOnActivity mapped CallPlace and any other place (e.g VoIPUserAccountPlace)
 	@Override
 	public Activity getActivity(Place place) {
-		if (place instanceof CallDataRecordPlace) {
-			return signOnActivityProvider.get().withPlace((CallDataRecordPlace) place);
+		if (place instanceof CdrPlace) {
+			return signOnActivityProvider.get().withPlace((CdrPlace) place);
+		} if (place instanceof CdrSummaryPlace) {
+			return signOnActivityProvider.get().withPlace((CdrSummaryPlace) place);
 		} else {
 			return null;
 		}

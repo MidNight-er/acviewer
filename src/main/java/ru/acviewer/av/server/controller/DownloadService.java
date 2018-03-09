@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import ru.acviewer.av.server.domain.CallDataRecord;
+import ru.acviewer.av.server.domain.Cdr;
 import ru.acviewer.av.server.exception.UserIsNotAuthenticated;
 import ru.acviewer.av.server.supplier.AudioSupplier;
-import ru.acviewer.av.server.supplier.CallDataRecordSupplier;
+import ru.acviewer.av.server.supplier.CdrSupplier;
 
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
@@ -36,7 +36,7 @@ public class DownloadService {
 	private AudioSupplier audioSupplier;
 	
 	@Inject
-	private CallDataRecordSupplier callDataRecordSupplier;
+	private CdrSupplier callDataRecordSupplier;
 	
 	@Inject
 	public DownloadService(Logger log) {
@@ -46,7 +46,7 @@ public class DownloadService {
 	@Get
 	public Reply<?> downloadFile() {
 		try {
-			CallDataRecord cdr = callDataRecordSupplier.findById(id);
+			Cdr cdr = callDataRecordSupplier.findById(id);
 			if (cdr != null && !cdr.getUniqueId().isEmpty()) {
 				File file = audioSupplier.getAudioFile(filePath 
 						+ cdr.getUniqueId() + "." + fileExtension);

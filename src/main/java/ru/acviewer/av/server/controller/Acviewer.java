@@ -17,14 +17,6 @@ public class Acviewer {
 	
 	private UserAccount userAccount;
 	
-	public UserAccount getUserAccount() {
-		return userAccount;
-	}
-
-	public void setUserAccount(UserAccount userAccount) {
-		this.userAccount = userAccount;
-	}
-
 	@Inject
 	public Acviewer(Logger log, Provider<UserSession> userSessionProvider) {
 		this.log = log;
@@ -35,6 +27,14 @@ public class Acviewer {
 	public void get() {
 		UserSession userSession = userSessionProvider.get();
 		userAccount = userSession.getUserAccount();
+	}
+	
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
 	}
 	
 }

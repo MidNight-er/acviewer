@@ -3,10 +3,10 @@ package ru.acviewer.av.client.activity;
 import java.util.Date;
 
 import ru.acviewer.av.client.bean.SearchRequest;
-import ru.acviewer.av.client.provider.CallDataProvider;
-import ru.acviewer.av.client.service.CallDataRecordRequestFactory;
-import ru.acviewer.av.client.service.CallDataRecordRequestFactory.CallRequestContext;
-import ru.acviewer.av.client.view.CallDataRecordView;
+import ru.acviewer.av.client.provider.CdrDataProvider;
+import ru.acviewer.av.client.service.CdrRequestFactory;
+import ru.acviewer.av.client.service.CdrRequestFactory.CallRequestContext;
+import ru.acviewer.av.client.view.CdrView;
 import ru.acviewer.av.client.widget.SearchEditor;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -19,20 +19,20 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
-public class CallDataRecordActivity extends AbstractActivity implements
-		CallDataRecordView.Presenter {
+public class CdrActivity extends AbstractActivity implements
+		CdrView.Presenter {
 	private final long DATE_START = 1000L * 60 * 60 * 24 * 14; // two weeks
 	//private final long DATE_START = 1000L * 60 * 60 * 24 * 400; // 400 days
 
-	private CallDataRecordView callDataRecordView;
+	private CdrView callDataRecordView;
 	private PlaceController placeController;
-	private CallDataRecordRequestFactory cdrRequestFactory;
+	private CdrRequestFactory cdrRequestFactory;
 	
 	@Inject
 	private EventBus eventBus;
 	
 	@Inject
-	public CallDataRecordActivity(CallDataRecordView callDataRecordView, 
+	public CdrActivity(CdrView callDataRecordView, 
 			PlaceController placeController) {
 		this.callDataRecordView = callDataRecordView;
 		this.placeController = placeController;
@@ -45,11 +45,11 @@ public class CallDataRecordActivity extends AbstractActivity implements
 	private static final Driver driver = GWT.create(Driver.class);
 	
 	@Inject
-	private void setUpReqestFactory(CallDataRecordRequestFactory cdrRequestFactory) {
+	private void setUpReqestFactory(CdrRequestFactory cdrRequestFactory) {
 		this.cdrRequestFactory = cdrRequestFactory;
 	}
 	
-	public CallDataRecordActivity withPlace(Place place) {
+	public CdrActivity withPlace(Place place) {
 		return this;
 	}
 	
@@ -71,7 +71,7 @@ public class CallDataRecordActivity extends AbstractActivity implements
 				driver.initialize(callDataRecordView.getSearchEditor());
 				driver.edit(searchRequest);
 				
-				CallDataProvider callDataProvider = new CallDataProvider(cdrRequestFactory,
+				CdrDataProvider callDataProvider = new CdrDataProvider(cdrRequestFactory,
 						driver, searchRequest);
 				callDataProvider.addDataDisplay(callDataRecordView.getCallDataRecords());
 			}

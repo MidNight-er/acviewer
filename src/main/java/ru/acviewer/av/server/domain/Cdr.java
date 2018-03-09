@@ -19,20 +19,20 @@ import javax.persistence.Version;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "CallDataRecord.findAll", query = "SELECT c FROM CallDataRecord c"
+		@NamedQuery(name = "Cdr.findAll", query = "SELECT c FROM Cdr c"
 				+ " WHERE (c.start > :start) AND (c.end < :end)" 
 				+ " AND (c.clid.clid LIKE :clid) AND (c.src LIKE :src)"
 				+ " AND (c.dst LIKE :dst)"
 				+ " AND (c.disposition LIKE :disposition)"
 				+ " ORDER BY c.start DESC"),
-		@NamedQuery(name = "CallDataRecord.count", query = "SELECT COUNT(c) FROM CallDataRecord c"
+		@NamedQuery(name = "Cdr.count", query = "SELECT COUNT(c) FROM Cdr c"
 				+ " WHERE (c.start > :start) AND (c.end < :end)"
 				+ " AND (c.clid.clid LIKE :clid) AND (c.src LIKE :src)"
 				+ " AND (c.dst LIKE :dst)"
 				+ " AND (c.disposition LIKE :disposition)")
 })
 @Table(name = "cdr")
-public class CallDataRecord implements Serializable {
+public class Cdr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -105,7 +105,7 @@ public class CallDataRecord implements Serializable {
 	@Column(name = "end", nullable = false)
 	private Date end;
 
-	public CallDataRecord() {
+	public Cdr() {
 
 	}
 
@@ -128,8 +128,12 @@ public class CallDataRecord implements Serializable {
 	public String getDst() {
 		return dst;
 	}
+	
+	public Double getDuration() {
+		return duration;
+	}
 
-	public double getBillsec() {
+	public Double getBillsec() {
 		return billsec;
 	}
 

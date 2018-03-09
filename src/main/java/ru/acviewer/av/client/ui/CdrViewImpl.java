@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import ru.acviewer.av.client.AcviewerUtils;
 import ru.acviewer.av.client.bean.AudioPlayer;
 import ru.acviewer.av.client.bean.PlayerControl;
 import ru.acviewer.av.client.cell.AudioPlayButtonCell;
@@ -12,15 +13,13 @@ import ru.acviewer.av.client.cell.AudioTimerCell;
 import ru.acviewer.av.client.cell.AudioDownloadCell;
 import ru.acviewer.av.client.cell.HeaderCell;
 import ru.acviewer.av.client.i18n.messages.AppMessages;
-import ru.acviewer.av.client.view.CallDataRecordView;
+import ru.acviewer.av.client.view.CdrView;
 import ru.acviewer.av.client.widget.SearchEditor;
-import ru.acviewer.av.shared.CallDataRecordProxy;
+import ru.acviewer.av.shared.CdrProxy;
 
 import com.github.gwtbootstrap.client.ui.CellTable;
 import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
-import com.github.gwtbootstrap.datetimepicker.client.ui.DateTimeBox;
-import com.github.gwtbootstrap.datetimepicker.client.ui.base.PickerPosition;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.DateCell;
@@ -30,11 +29,8 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -43,22 +39,20 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.RangeChangeEvent;
 
-public class CallDataRecordViewImpl extends Composite implements CallDataRecordView {
+public class CdrViewImpl extends Composite implements CdrView {
 
-	interface AppBinder extends UiBinder<Widget, CallDataRecordViewImpl> {
+	interface AppBinder extends UiBinder<Widget, CdrViewImpl> {
 	}
 
 	private static AppBinder appBinder = GWT.create(AppBinder.class);
 	
-	private NoSelectionModel<CallDataRecordProxy> selectionModel;
+	private NoSelectionModel<CdrProxy> selectionModel;
 	
 	interface AppResource extends CssResource {
 		String emptyTableWidget();
@@ -71,7 +65,7 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 
 	private AudioPlayer audioPlayer;
 	
-	public CallDataRecordViewImpl() {
+	public CdrViewImpl() {
 		initWidget(appBinder.createAndBindUi(this));
 		setUpAudioPlayer();
 		buildTable();
@@ -111,10 +105,10 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 	}
 
 	@UiField
-	CellTable<CallDataRecordProxy> callDataRecords;
+	CellTable<CdrProxy> callDataRecords;
 	
 	@Override
-	public CellTable<CallDataRecordProxy> getCallDataRecords() {
+	public CellTable<CdrProxy> getCallDataRecords() {
 		return callDataRecords;
 	}
 
@@ -135,16 +129,16 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 	 * table for render 'CallDataRecord' object
 	 */
 	private void buildTable() {
-		selectionModel = new NoSelectionModel<CallDataRecordProxy>();
+		selectionModel = new NoSelectionModel<CdrProxy>();
 		callDataRecords.setSelectionModel(selectionModel);
 		Cell<Date> dateCell = new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM));
 		Cell<Date> timeCell = new DateCell(DateTimeFormat.getFormat(PredefinedFormat.TIME_SHORT));
 		Cell<String> textCell = new TextCell();
 
 		// date columns
-		Column<CallDataRecordProxy, Date> date = new Column<CallDataRecordProxy, Date>(dateCell) {
+		Column<CdrProxy, Date> date = new Column<CdrProxy, Date>(dateCell) {
 			@Override
-			public Date getValue(CallDataRecordProxy object) {
+			public Date getValue(CdrProxy object) {
 				return object.getStart();
 			}
 		};
@@ -152,9 +146,9 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 		callDataRecords.addColumn(date, msg.callDate());
 		
 		// clid column
-		Column<CallDataRecordProxy, String> clid = new Column<CallDataRecordProxy, String>(textCell) {
+		Column<CdrProxy, String> clid = new Column<CdrProxy, String>(textCell) {
 			@Override
-			public String getValue(CallDataRecordProxy object) {
+			public String getValue(CdrProxy object) {
 				return object.getClid().getName();
 			}
 		};
@@ -162,9 +156,9 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 		callDataRecords.addColumn(clid, msg.callClid());
 
 		// src column
-		Column<CallDataRecordProxy, String> src = new Column<CallDataRecordProxy, String>(textCell) {
+		Column<CdrProxy, String> src = new Column<CdrProxy, String>(textCell) {
 			@Override
-			public String getValue(CallDataRecordProxy object) {
+			public String getValue(CdrProxy object) {
 				return object.getSrc();
 			}
 		};
@@ -172,9 +166,9 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 		callDataRecords.addColumn(src, msg.callSrc());
 
 		// dst column
-		Column<CallDataRecordProxy, String> dst = new Column<CallDataRecordProxy, String>(textCell) {
+		Column<CdrProxy, String> dst = new Column<CdrProxy, String>(textCell) {
 			@Override
-			public String getValue(CallDataRecordProxy object) {
+			public String getValue(CdrProxy object) {
 				return object.getDst();
 			}
 		};
@@ -182,10 +176,10 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 		callDataRecords.addColumn(dst, msg.callDst());
 
 		// disposition column
-		Column<CallDataRecordProxy, String> disposition = new Column<CallDataRecordProxy, String>(
+		Column<CdrProxy, String> disposition = new Column<CdrProxy, String>(
 				textCell) {
 			@Override
-			public String getValue(CallDataRecordProxy object) {
+			public String getValue(CdrProxy object) {
 				String disp = null;
 				switch (object.getDisposition()) {
 				case "ANSWERED":
@@ -211,46 +205,40 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 		callDataRecords.addColumn(disposition, msg.callDisposition());
 
 		// date column
-		Column<CallDataRecordProxy, Date> start = new Column<CallDataRecordProxy, Date>(timeCell) {
+		Column<CdrProxy, Date> start = new Column<CdrProxy, Date>(timeCell) {
 			@Override
-			public Date getValue(CallDataRecordProxy object) {
+			public Date getValue(CdrProxy object) {
 				return object.getStart();
 			}
 		};
 		callDataRecords.addColumn(start, msg.callStart());
 
-		// answer column
-		Column<CallDataRecordProxy, Date> answer = new Column<CallDataRecordProxy, Date>(timeCell) {
+		// duration column
+		Column<CdrProxy, String> duration = new Column<CdrProxy, String>(textCell) {
 			@Override
-			public Date getValue(CallDataRecordProxy object) {
-				return object.getAnswer();
+			public String getValue(CdrProxy object) {
+				String mf = AcviewerUtils.minuteFormat(object.getBillsec());
+				String sf = AcviewerUtils.secondFormat(object.getBillsec());
+				return mf + ":" + sf;
 			}
 		};
-		callDataRecords.addColumn(answer, msg.callAnswer());
-
-		// end column
-		Column<CallDataRecordProxy, Date> end = new Column<CallDataRecordProxy, Date>(timeCell) {
-			@Override
-			public Date getValue(CallDataRecordProxy object) {
-				return object.getEnd();
-			}
-		};
-		callDataRecords.addColumn(end, msg.callEnd());
+		callDataRecords.setColumnWidth(duration, "12%");
+		callDataRecords.addColumn(duration, msg.callDuration());
 
 		// play button column
 		AudioPlayButtonCell playButtonCell = new AudioPlayButtonCell();
-		Column<CallDataRecordProxy, Long> playButton = new Column<CallDataRecordProxy, Long>(playButtonCell) {
+		Column<CdrProxy, Long> playButton = new Column<CdrProxy, Long>(playButtonCell) {
 			@Override
-			public Long getValue(CallDataRecordProxy object) {
+			public Long getValue(CdrProxy object) {
 				Long id = null;
 				if (object.getRecord()) {
 					id = object.getId();
 				} return id;
 			}
 		};
-		playButton.setFieldUpdater(new FieldUpdater<CallDataRecordProxy, Long>() {
+		playButton.setFieldUpdater(new FieldUpdater<CdrProxy, Long>() {
 			@Override
-			public void update(int index, CallDataRecordProxy object, Long value) {
+			public void update(int index, CdrProxy object, Long value) {
 				if (value != null) {
 					audioPlayer.play(value);
 				}
@@ -261,9 +249,9 @@ public class CallDataRecordViewImpl extends Composite implements CallDataRecordV
 		
 		// audio composite cell column
 		CompositeCell<PlayerControl> compositeCell = buildAudioCompositeCell();
-		Column<CallDataRecordProxy, PlayerControl> composit = new Column<CallDataRecordProxy, PlayerControl>(compositeCell) {
+		Column<CdrProxy, PlayerControl> composit = new Column<CdrProxy, PlayerControl>(compositeCell) {
 			@Override
-			public PlayerControl getValue(CallDataRecordProxy object) {
+			public PlayerControl getValue(CdrProxy object) {
 				PlayerControl playerControl = null;
 				if (object.getRecord()) {
 					playerControl = new PlayerControl(object.getId());

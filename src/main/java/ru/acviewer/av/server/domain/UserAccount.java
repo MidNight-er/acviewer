@@ -2,9 +2,12 @@ package ru.acviewer.av.server.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -21,7 +24,10 @@ public class UserAccount implements Serializable {
 	
 	@Column(name = "hash", nullable = false)
 	private String hash;	// BCrypt HASH of user password
-
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private SummaryRange summaryRange;
+	
 	public UserAccount() {
 		
 	}
@@ -45,4 +51,13 @@ public class UserAccount implements Serializable {
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
+
+	public SummaryRange getSummaryRange() {
+		return summaryRange;
+	}
+
+	public void setSummaryRange(SummaryRange summaryRange) {
+		this.summaryRange = summaryRange;
+	}
+
 }

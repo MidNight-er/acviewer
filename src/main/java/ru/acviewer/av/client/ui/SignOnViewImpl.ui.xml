@@ -39,6 +39,8 @@
 							<b:NavLink ui:field="signOutField" 
 								text="{msg.exitProgram}" href="signOut"/>
 						</b:Dropdown>
+						<b:NavLink href="#cdr:">Общая</b:NavLink>
+						<b:NavLink href="#cdr-summary:">Краткая</b:NavLink>
 					</b:NavPills>
 
 					<b:Nav alignment="RIGHT">
@@ -93,13 +95,7 @@
 						<br />
 						<strong>Михаил Девятов</strong>
 					</address>
-					<p>
-						<ui:text from="{msg.signOnLicense}" />
-						<a href="{resources.license.getSafeUri}">
-							<b:Image url="{resources.acrobatReader.getSafeUri.asString}"
-								styleName="{style.license-icon}" />
-						</a>
-					</p>
+
 				</g:HTMLPanel>
 				<b:ModalFooter>
 					<b:Button ui:field="aboutModalHideButton" icon="REMOVE"

@@ -2,8 +2,8 @@ package ru.acviewer.av.client.activity;
 
 import ru.acviewer.av.client.event.PasswordUpdateEvent;
 import ru.acviewer.av.client.i18n.messages.AppMessages;
-import ru.acviewer.av.client.service.UserRequestFactory;
-import ru.acviewer.av.client.service.UserRequestFactory.UserRequestContext;
+import ru.acviewer.av.client.service.UserAccountRequestFactory;
+import ru.acviewer.av.client.service.UserAccountRequestFactory.UserAccountContext;
 import ru.acviewer.av.client.view.SignOnView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -20,7 +20,7 @@ public class SignOnActivity extends AbstractActivity implements
 
 	private SignOnView signOnView;
 	private PlaceController placeController;
-	private UserRequestFactory requestFactory;
+	private UserAccountRequestFactory requestFactory;
 
 	@Inject
 	private EventBus eventBus;
@@ -34,7 +34,7 @@ public class SignOnActivity extends AbstractActivity implements
 	}
 
 	@Inject
-	private void setUpRequestFactory(UserRequestFactory requestFactory) {
+	private void setUpRequestFactory(UserAccountRequestFactory requestFactory) {
 		this.requestFactory = requestFactory;
 	}
 
@@ -54,7 +54,7 @@ public class SignOnActivity extends AbstractActivity implements
 		String newPassword = signOnView.getNewPassword().getValue();
 		String retypePassword = signOnView.getRetypePassword().getValue();
 
-		UserRequestContext ctx = requestFactory.createRequestContext();
+		UserAccountContext ctx = requestFactory.createRequestContext();
 			ctx.updatePassword(password, newPassword, retypePassword).fire(
 					new Receiver<Void>() {
 					@Override

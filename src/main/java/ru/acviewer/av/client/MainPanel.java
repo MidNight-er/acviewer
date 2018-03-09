@@ -1,7 +1,7 @@
 package ru.acviewer.av.client;
 
 import ru.acviewer.av.client.activity.AcviewerActivityMapper;
-import ru.acviewer.av.client.activity.CallDataRecordActivityMapper;
+import ru.acviewer.av.client.activity.CdrActivityMapper;
 import ru.acviewer.av.client.view.SignOnView;
 
 import com.google.gwt.activity.shared.ActivityManager;
@@ -33,16 +33,16 @@ public class MainPanel extends Composite {
 	
 	@Inject
 	private void setUpActivityMapper(AcviewerActivityMapper appActivityMapper, 
-			CallDataRecordActivityMapper callActivityMapper, SignOnView signOnView) {
+			CdrActivityMapper cdrActivityMapper, SignOnView signOnView) {
 		
 		// AppActivityMapper
 		ActivityManager appActivityManager = new ActivityManager(
 				appActivityMapper, eventBus);
 		appActivityManager.setDisplay(mainPanel);
-		// CallActivityMapper
-		ActivityManager callActivityManager = new ActivityManager(
-				callActivityMapper, eventBus);
-		callActivityManager.setDisplay(signOnView.getWorkFlowPanel());
+		// CdrActivityMapper
+		ActivityManager cdrActivityManager = new ActivityManager(
+				cdrActivityMapper, eventBus);
+		cdrActivityManager.setDisplay(signOnView.getWorkFlowPanel());
 				
 	}
 

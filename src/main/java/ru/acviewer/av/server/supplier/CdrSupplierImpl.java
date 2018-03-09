@@ -6,18 +6,22 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
-import ru.acviewer.av.server.domain.CallDataRecord;
+import ru.acviewer.av.server.domain.Cdr;
+import ru.acviewer.av.server.domain.CdrSummary;
 import ru.acviewer.av.server.interceptor.AuthenticationRequired;
 
-public class CallDataRecordSupplierImpl implements CallDataRecordSupplier {
+public class CdrSupplierImpl implements CdrSupplier {
 
 	private Logger log;
+	
 	private Provider<EntityManager> entityManagerProvider;
 
 	@Inject
@@ -25,14 +29,14 @@ public class CallDataRecordSupplierImpl implements CallDataRecordSupplier {
 	private String filePath;
 	
 	@Inject
-	public CallDataRecordSupplierImpl(Logger log, Provider<EntityManager> entityManagerProvider) {
+	public CdrSupplierImpl(Logger log, Provider<EntityManager> entityManagerProvider) {
 		this.log = log;
 		this.entityManagerProvider = entityManagerProvider;
 	}
 
 	@Override
-	public CallDataRecord findById(Long id) {
-		return entityManagerProvider.get().find(CallDataRecord.class, id);
+	public Cdr findById(Long id) {
+		return entityManagerProvider.get().find(Cdr.class, id);
 	}
 	
 	@Override
@@ -42,11 +46,11 @@ public class CallDataRecordSupplierImpl implements CallDataRecordSupplier {
 
 	@AuthenticationRequired
 	@Override
-	public List<CallDataRecord> findAll(int start, int length, Date dateStart, 
+	public List<Cdr> findAll(int start, int length, Date dateStart, 
 			Date dateLength, String clid, String src, String dst, String disposition) {
-		List<CallDataRecord> callList = null;
-		TypedQuery<CallDataRecord> query = entityManagerProvider.get().createNamedQuery(
-				"CallDataRecord.findAll", CallDataRecord.class);
+		List<Cdr> callList = null;
+		TypedQuery<Cdr> query = entityManagerProvider.get().createNamedQuery(
+				"Cdr.findAll", Cdr.class);
 		query.setFirstResult(start);
 		query.setMaxResults(length);
 
@@ -66,7 +70,7 @@ public class CallDataRecordSupplierImpl implements CallDataRecordSupplier {
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
-		for (CallDataRecord call : callList) {
+		for (Cdr call : callList) {
 			// check file system and SELinux context permission
 			File file = new File(filePath, call.getUniqueId() + ".wav");
 			call.setRecord(file.exists());
@@ -80,7 +84,7 @@ public class CallDataRecordSupplierImpl implements CallDataRecordSupplier {
 			String clid, String src, String dst, String disposition) {
 		int count = 0;
 		TypedQuery<Number> query = entityManagerProvider.get()
-				.createNamedQuery("CallDataRecord.count", Number.class);
+				.createNamedQuery("Cdr.count", Number.class);
 		query.setParameter("start", dateStart);
 		query.setParameter("end", dateLength);
 		String clidParam = makeClidParam(clid);
@@ -102,5 +106,21 @@ public class CallDataRecordSupplierImpl implements CallDataRecordSupplier {
 	
 	private String makeClidParam(String clid) {
 		return (clid.isEmpty()) ? "%" : "%\"%" + clid + "%\"%"; // get name only
+	}
+	
+	@Override
+	public List<CdrSummary> findAllSummaries(int start, int length) {
+		List<CdrSummary> summaries = null;
+		TypedQuery<CdrSummary> query = entityManagerProvider.get()
+				.createNamedQuery("CdrSummary.findAll", CdrSummary.class);
+		query.setFirstResult(start);
+		query.setMaxResults(length);
+		
+		try {
+			summaries = query.getResultList();
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}		
+		return summaries;
 	}
 }

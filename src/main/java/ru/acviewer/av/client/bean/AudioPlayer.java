@@ -1,5 +1,6 @@
 package ru.acviewer.av.client.bean;
 
+import ru.acviewer.av.client.AcviewerUtils;
 import ru.acviewer.av.client.event.dom.CanPlayEvent;
 import ru.acviewer.av.client.event.dom.CanPlayHandler;
 import ru.acviewer.av.client.event.dom.PauseEvent;
@@ -26,6 +27,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.inject.Inject;
 
 public class AudioPlayer {
 	
@@ -185,15 +187,9 @@ public class AudioPlayer {
 	}
 	
 	private void updateTime(double currentTime) {
-		// minutes format
-		double m = Math.floor((currentTime / 60) % 60);
-		String mf = m < 10 ? NumberFormat.getFormat("0").format(m) :
-			NumberFormat.getFormat("00").format(m);
-		// seconds format
-		double s = Math.floor(currentTime % 60);
-		String sf = s < 10 ? NumberFormat.getFormat("0").format(s) :
-			NumberFormat.getFormat("00").format(s);
-		timer.setInnerText(mf + ":" + sf);		
+		String mf = AcviewerUtils.minuteFormat(currentTime);
+		String sf = AcviewerUtils.secondFormat(currentTime);
+		timer.setInnerText(mf + ":" + sf);
 	}
 	
 	private void updateSeek(double currentTime, double duration) {

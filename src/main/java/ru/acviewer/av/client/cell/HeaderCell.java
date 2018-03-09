@@ -19,7 +19,7 @@ public class HeaderCell extends AbstractCell<String> {
 	}
 	
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context,
+	public void render(Context context,
 			String value, SafeHtmlBuilder sb) {
 		if (value != null) {
 			renderer.render(sb, value);

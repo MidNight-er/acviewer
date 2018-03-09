@@ -1,5 +1,7 @@
 package ru.acviewer.av.server.supplier;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 
 import com.google.inject.Guice;
@@ -10,9 +12,10 @@ import com.google.inject.persist.PersistService;
 import com.google.inject.persist.Transactional;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
+import ru.acviewer.av.server.domain.SummaryRange;
 import ru.acviewer.av.server.domain.UserAccount;
 
-public class AppMisc {
+public class AcviewerMisc {
 
 	// default user and pass
 	private final String NAME = "admin";
@@ -27,10 +30,14 @@ public class AppMisc {
 	@Transactional	// transactional annotation going to be set only on public method
 	public void createUserAccount() {
 		if (entityManagerProvider.get().find(UserAccount.class, NAME) == null) {
-			UserAccount account = new UserAccount(NAME);
+			SummaryRange summaryRange = new SummaryRange();
+			summaryRange.setCdrStart(new Date());
+			summaryRange.setCdrEnd(new Date());
+			UserAccount userAccount = new UserAccount(NAME);
 			String hash = BCrypt.hashpw(PASS, BCrypt.gensalt());
-			account.setHash(hash);
-			entityManagerProvider.get().persist(account);
+			userAccount.setHash(hash);
+			userAccount.setSummaryRange(summaryRange);
+			entityManagerProvider.get().persist(userAccount);
 		}
 	}
 	
@@ -48,7 +55,7 @@ public class AppMisc {
 	
 	public static void populateDataStoreAtOnce(JpaPersistModule persistModule) {
 		Injector injector = Guice.createInjector(persistModule);
-		AppMisc appMisc = injector.getInstance(AppMisc.class);
+		AcviewerMisc appMisc = injector.getInstance(AcviewerMisc.class);
 		appMisc.startService();
 		// create single user, "session per transaction" strategy
 		appMisc.createUserAccount();

@@ -18,10 +18,6 @@ public class SearchRequest {
 
 	private Disposition disposition;
 	
-	public SearchRequest() {
-		
-	}
-	
 	public Date getDateTimeStart() {
 		return dateTimeStart;
 	}
