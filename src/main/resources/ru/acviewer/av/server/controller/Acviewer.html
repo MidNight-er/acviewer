@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ACViewer</title>
+@ShowIf(userAccount == null)
+<link rel="stylesheet" href="acviewer/css/bootstrap.min.css">
+@ShowIf(userAccount != null)
+<script src="acviewer/acviewer.nocache.js"></script>
+</head>
+<style>
+	.authContainer {
+ 	   margin-top: 150px;
+	}
+</style>
+
+<body>
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+
+	@ShowIf(userAccount == null)
+	<div class="container authContainer">
+    	<div class="row">
+			<div class="span4 offset4 well">
+				<legend>Авторизация</legend>
+ 				<!-- <div class="alert alert-error">
+                	<a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
+            	</div> -->
+				<form action="/signIn" method="post">
+					<input  class="span4" type="text" name="name" 
+							placeholder="Имя">
+					<input class="span4" type="password" name="password" 
+							placeholder="Пароль">
+				<!-- <label class="checkbox">
+            		<input type="checkbox" name="remember" value="1"> Remember Me
+            	</label> -->
+				<button type="submit" name="signIn" class="btn btn-info btn-block">Войти</button>
+				</form>    
+			</div>
+		</div>
+	</div>
+</body>
+</html>

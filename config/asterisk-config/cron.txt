@@ -1,0 +1,1 @@
+0 3 * * * find /var/spool/asterisk/monitor -mtime +90 -exec rm {} \;

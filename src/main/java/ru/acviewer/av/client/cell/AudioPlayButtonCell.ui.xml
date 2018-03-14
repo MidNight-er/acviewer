@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+
+	<ui:with type="java.lang.String" field="elementId" />
+	<ui:with type="java.lang.String" field="playButtonClass" />
+	<ui:with type="java.lang.String" field="playIconClass" />
+
+	<button id="{elementId}" class="{playButtonClass}" tabindex="-1">
+		<i class="{playIconClass}" />
+	</button>
+</ui:UiBinder> 

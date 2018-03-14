@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ru.av</groupId>
+	<artifactId>acviewer</artifactId>
+	<packaging>war</packaging>
+	<version>2.3.0</version>
+	<name>GWT Maven Archetype</name>
+
+	<properties>
+		<skipTests>true</skipTests>
+
+		<jetty.version>9.0.5.v20130815</jetty.version>
+		<gwt.version>2.6.1</gwt.version>
+		<guice.version>3.0</guice.version>
+		<mysql-connector-java.version>5.1.17</mysql-connector-java.version> <!-- centos rpm -->
+		<hibernate.version>4.1.0.Final</hibernate.version>
+		<slf4j.version>1.7.6</slf4j.version>
+
+		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+		<jettyConfDirectory>/etc/jetty</jettyConfDirectory>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<generated-sources>${project.build.directory}/generated-sources/gwt</generated-sources>
+	</properties>
+
+	<dependencies>
+		<!-- GWT dependencies, GWT RequestFactory with Guice injection -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- J2EE Servlet API -->
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jpa_2.0_spec</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+
+		<!-- Test scope -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Required by Hibernate validator because slf4j-log4j is optional in 
+			the hibernate-validator POM -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- Guice, GWT injection -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-persist</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.1.Final</version>
+		</dependency>
+		<!-- JSR 303 implementation, GWT framework include validation-api-1.0.0.GA -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.version}</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- sitebriks (and Guava dependency) -->
+		<dependency>
+			<groupId>com.google.sitebricks</groupId>
+			<artifactId>sitebricks</artifactId>
+			<version>0.8.10</version>
+		</dependency>
+		<!-- Twitter bootstrap -->
+		<dependency>
+			<groupId>com.github.gwtbootstrap</groupId>
+			<artifactId>gwt-bootstrap</artifactId>
+			<version>2.3.2.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- Generate compiled stuff in the folder used for developing mode -->
+		<outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes</outputDirectory>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.version}</version>
+				<configuration>
+					<stopPort>9966</stopPort>
+					<stopKey>CTRL+C</stopKey>
+					<webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
+					<!-- use for JNDI implementation -->
+					<jettyXml>${jettyConfDirectory}/jetty-plus.xml</jettyXml>
+					<webApp>
+						<descriptor>${webappDirectory}/WEB-INF</descriptor>
+						<defaultsDescriptor>${jettyConfDirectory}/webdefault.xml</defaultsDescriptor>
+					</webApp>
+					
+					<scanIntervalSeconds>1</scanIntervalSeconds>
+					<reload>manual</reload>
+				</configuration>
+				<dependencies>
+					<!-- connectors for JNDI -->
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql-connector-java.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<!-- GWT plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>test</goal>
+							<goal>i18n</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<i18nMessagesBundle>ru.acviewer.av.client.i18n.messages.AppMessages</i18nMessagesBundle>
+					<i18nConstantsBundle>ru.acviewer.av.client.i18n.constants.AppConstants</i18nConstantsBundle>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<archiveClasses>true</archiveClasses>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+							<filtering>true</filtering>
+							<targetPath>WEB-INF</targetPath>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.web.bindery</groupId>
+						<artifactId>requestfactory-apt</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<!-- configure the logging properties file to use when tests are run -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+					<systemPropertyVariables>
+						<java.util.logging.config.file>
+							src/test/resources/logging.properties
+						</java.util.logging.config.file>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<configuration>
+							<module>ru.acviewer.av.AppDev</module>
+							<optimizationLevel>0</optimizationLevel>
+							<draftCompile>true</draftCompile>
+							<extraParam>true</extraParam>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-maven-plugin</artifactId>
+						<configuration>
+							<jvmFlags>
+								<!-- <jvmFlag>-Ddatastore.backing_store=${project.basedir}\local_db.bin</jvmFlag> -->
+								<!-- RequestFactory server exchange dump -->
+								<jvmFlag>-Dgwt.rpc.dumpPayload=true</jvmFlag>
+							</jvmFlags>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>production</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<configuration>
+							<module>ru.acviewer.av.Acviewer</module>
+							<optimizationLevel>9</optimizationLevel>
+							<closureCompiler>true</closureCompiler>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

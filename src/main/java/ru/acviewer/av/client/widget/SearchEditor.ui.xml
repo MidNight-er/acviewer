@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:bd="urn:import:com.github.gwtbootstrap.datetimepicker.client.ui">
+	<ui:style src="Search.css">
+	
+	</ui:style>
+
+	<ui:with type="ru.acviewer.av.client.i18n.messages.AppMessages" field="messages" />
+
+	<g:HTMLPanel>
+		<b:Container>
+			<b:Form type="INLINE">
+				<b:ControlGroup>
+					<b:Controls>
+ 						<bd:DateTimeBox ui:field="dateTimeStart"
+							format="dd.mm.yyyy  hh:ii" autoClose="true"
+							pickerPosition="BOTTOM_LEFT"
+							addStyleNames="input-medium {style.acv-input}" />
+
+						<bd:DateTimeBox ui:field="dateTimeLength"
+							format="dd.mm.yyyy hh:ii" autoClose="true"
+							pickerPosition="BOTTOM_LEFT"
+							addStyleNames="input-medium {style.acv-input}" />
+ 
+ 						<b:TextBox ui:field="clid" placeholder="{messages.callClid}"
+							addStyleNames="input-medium {style.acv-input}" />
+
+						<b:TextBox ui:field="src" placeholder="{messages.callSrc}"
+							addStyleNames="input-medium {style.acv-input}" />
+
+						<b:TextBox ui:field="dst" placeholder="{messages.callDst}"
+							addStyleNames="input-medium {style.acv-input}" />
+						
+ 						<b:ValueListBox ui:field="disposition"
+							addStyleNames="input-medium {style.acv-input}" />
+							
+					</b:Controls>
+				</b:ControlGroup>
+			</b:Form>
+		</b:Container>
+	</g:HTMLPanel>
+</ui:UiBinder> 
